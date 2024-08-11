@@ -45,17 +45,55 @@ class Solution
     //Function to check if two strings are rotations of each other or not.
     public static boolean areRotations(String s1, String s2 )
     {
-         String rotated=s1+s1;
-        int cnt=0;
+        int [] lsp=new int[s2.length()];
+        BuildLSP(s2,lsp);
+        String concat = s1+s1;
+        int n=concat.length();
+        int n2=s2.length();
         int j=0;
-        for(int i=0;i<rotated.length();i++){
-            if(j==s2.length())break;
-            if(rotated.charAt(i)==s2.charAt(j)){
-            cnt++;
-            j++;}
+        int i=0;
+        while(i<n && j<n2)
+        {
+            if(concat.charAt(i)==s2.charAt(j))
+            {
+                ++i;
+                ++j;
+                
+            }
+            if(j==n2 )
+                return true;
+            if(i<n && concat.charAt(i)!=s2.charAt(j))
+                if(j!=0)
+                    j=lsp[j-1];
+                else ++i;
         }
-        if(cnt==s2.length())return true;
         return false;
+        
     }
+    private static void BuildLSP(String pattern,int [] lps) {
+        int i=0;
+        int j=1;
+        lps[i]=0;
+        int n=pattern.length();
+        while(j<n)
+        {
+            if(pattern.charAt(i)==pattern.charAt(j))
+            {
+                ++i;
+                lps[j]=i;
+                ++j;
+            }
+            else {
+                if(i!=0)
+                    i=lps[i-1];
+                else {
+                    lps[j]=0;
+                    ++j;
+                }
+            }
+        }
+        
+    }
+    
     
 }
